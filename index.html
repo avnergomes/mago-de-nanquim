@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Mago de Nanquim</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2a211b">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <script type="importmap">
+    { "imports": {
+        "three": "./vendor/three/build/three.module.js",
+        "three/addons/": "./vendor/three/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <div id="hud">
+    <div id="xp"><div id="xp-fill"></div></div>
+    <div id="top">
+      <span id="lvl">Nv 1</span>
+      <span id="timer">00:00</span>
+      <span id="kills">☠ 0</span>
+      <button id="pause-btn" aria-label="Pausar">❚❚</button>
+    </div>
+    <div id="bossbar"><b id="boss-name"></b><div><div id="boss-fill"></div></div></div>
+    <div id="build"></div>
+    <div id="combos"></div>
+    <div id="bottom">
+      <div id="hp"><div id="hp-fill"></div><span id="hp-txt"></span></div>
+      <div id="cds"></div>
+    </div>
+    <div id="pbar"><div id="pbar-fill"></div></div>
+    <div id="banner"></div>
+  </div>
+
+  <div id="joy-base"></div>
+  <div id="joy-knob"></div>
+
+  <div id="start" class="modal show">
+    <div class="sheet">
+      <h1>Mago de <span>Nanquim</span></h1>
+      <p class="lead">Um sobrevivente de horda em 3D, desenhado à mão.</p>
+      <p>Sobreviva 20 minutos à horda. As magias disparam sozinhas; você só precisa se mover.<br>
+        Suba de nível, combine atributos e libere os 25 combos.</p>
+      <p class="keys"><kbd>W A S D</kbd> ou setas para andar · arraste na tela no celular · <kbd>1-4</kbd> escolhe cartas · <kbd>Esc</kbd> pausa</p>
+      <button id="start-btn" class="btn">Começar</button>
+      <button id="install-btn" class="btn" hidden>Instalar no aparelho</button>
+      <p id="install-ios" class="keys" hidden>No iPhone: toque em Compartilhar e depois em "Adicionar à Tela de Início".</p>
+      <p class="credit">Projeto de fã sem fins comerciais, inspirado em <i>Magic Survival</i> (LEME). Sem vínculo oficial.</p>
+    </div>
+  </div>
+
+  <div id="choice" class="modal">
+    <div class="sheet wide">
+      <h2 id="choice-title"></h2>
+      <p id="choice-sub"></p>
+      <div id="choice-cards"></div>
+    </div>
+  </div>
+
+  <div id="pause" class="modal">
+    <div class="sheet">
+      <h2>Pausado</h2>
+      <div id="pause-build"></div>
+      <button id="pause-resume" class="btn">Continuar</button>
+    </div>
+  </div>
+
+  <div id="end" class="modal">
+    <div class="sheet">
+      <h2 id="end-title"></h2>
+      <div id="end-stats"></div>
+      <button id="end-continue" class="btn">Modo infinito</button>
+      <button id="end-restart" class="btn">Jogar de novo</button>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
