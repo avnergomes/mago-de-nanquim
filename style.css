@@ -104,7 +104,7 @@ h2.pick { font-size: 22px; margin: 10px 0 6px; }
 #class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
 .cls { font: inherit; color: var(--ink); cursor: pointer; display: grid; justify-items: center; gap: 2px; padding: 6px 2px;
   background: color-mix(in srgb, var(--accent) 10%, #fffbe9); border: 2px solid var(--ink); border-radius: 9px 12px 8px 13px; }
-.cls span { width: 34px; height: 34px; display: grid; place-items: center; font-size: 22px; }
+.cls span { width: 42px; height: 42px; display: grid; place-items: center; font-size: 22px; }
 .cls small { font-size: 11px; line-height: 1.1; }
 .cls[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 40%, var(--paper)); box-shadow: 2px 3px 0 var(--ink); transform: translateY(-2px) rotate(-1deg); }
 #class-info { cursor: default; margin: 10px 0 4px; }

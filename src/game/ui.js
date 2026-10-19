@@ -8,6 +8,7 @@ import { COMBOS } from '../data/combos.js';
 import { PASSIVES, SPECIALS } from '../data/passives.js';
 import { levelOptions, attrOptions, chestOptions } from './levelup.js';
 import { spellIcon } from '../render/icons.js';
+import { classIcon as classArt, classColor } from '../render/classIcons.js';
 import { CLASSES, CLASS_BY_ID } from '../data/classes.js';
 
 const $ = (id) => document.getElementById(id);
@@ -77,8 +78,7 @@ export function pumpLevelUps() {
 let classId = 'wizard';
 try { const saved = localStorage.getItem('nanquim-class'); if (CLASS_BY_ID[saved]) classId = saved; } catch {}
 export const chosenClass = () => classId;
-const classIcon = (c) => (c.icon ? esc(c.icon) : spellIcon(c.spell));
-const classColor = (c) => (c.spell ? ELEM[SPELL_BY_ID[c.spell].elem].color : '#8a6a3a');
+const classIcon = (c) => classArt(c.id) ?? (c.icon ? esc(c.icon) : spellIcon(c.spell));
 
 function initClassPicker() {
   const grid = $('class-grid');

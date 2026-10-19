@@ -3,21 +3,21 @@ import { ELEM, SPELL_BY_ID } from '../data/spells.js';
 // Ilustrações das magias a nanquim, geradas por código: contorno sépia, aguada em gradiente na cor do
 // elemento, hachura nas sombras, brilho de papel, respingos e detalhes procedurais (runas, faíscas,
 // flocos, chamas). Tudo com semente fixa, então cada ícone sai igual sempre. Um SVG por magia (viewBox 64x64).
-const K = '#2a211b';
-const P = '#fffbe9';
-const S = `stroke="${K}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"`; // contorno principal
-const M = `stroke="${K}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"`; // contorno médio
-const T = `stroke="${K}" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"`; // detalhe fino
-const HATCH = 'fill="url(#ink-hatch)" stroke="none"'; // sombra em hachura
-const CROSS = 'fill="url(#ink-cross)" stroke="none"'; // sombra funda em hachura cruzada
-const SHINE = `fill="${P}" fill-opacity=".85" stroke="none"`; // brilho de papel por cima da aguada
+export const K = '#2a211b';
+export const P = '#fffbe9';
+export const S = `stroke="${K}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"`; // contorno principal
+export const M = `stroke="${K}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"`; // contorno médio
+export const T = `stroke="${K}" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"`; // detalhe fino
+export const HATCH = 'fill="url(#ink-hatch)" stroke="none"'; // sombra em hachura
+export const CROSS = 'fill="url(#ink-cross)" stroke="none"'; // sombra funda em hachura cruzada
+export const SHINE = `fill="${P}" fill-opacity=".85" stroke="none"`; // brilho de papel por cima da aguada
 
 // ---------- utilidades ----------
 const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-const mix = (a, b, t) => '#' + rgb(a).map((v, i) => Math.round(v + (rgb(b)[i] - v) * t).toString(16).padStart(2, '0')).join('');
-const n2 = (v) => +v.toFixed(2);
-const hash = (str) => [...str].reduce((h, ch) => Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0, 2166136261);
-function rng(seed) {
+export const mix = (a, b, t) => '#' + rgb(a).map((v, i) => Math.round(v + (rgb(b)[i] - v) * t).toString(16).padStart(2, '0')).join('');
+export const n2 = (v) => +v.toFixed(2);
+export const hash = (str) => [...str].reduce((h, ch) => Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0, 2166136261);
+export function rng(seed) {
   let s = seed >>> 0;
   return () => {
     s = (s + 0x6d2b79f5) >>> 0;
@@ -26,10 +26,10 @@ function rng(seed) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-const polar = (cx, cy, r, a) => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+export const polar = (cx, cy, r, a) => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
 
 // curva suave (Catmull-Rom) passando pelos pontos
-function smooth(pts, closed = true) {
+export function smooth(pts, closed = true) {
   const n = pts.length;
   const at = (i) => pts[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
   let d = `M${n2(pts[0][0])} ${n2(pts[0][1])}`;
@@ -39,10 +39,10 @@ function smooth(pts, closed = true) {
   }
   return closed ? d + 'Z' : d;
 }
-const poly = (pts, close = true) => 'M' + pts.map(([x, y]) => `${n2(x)} ${n2(y)}`).join(' L') + (close ? 'Z' : '');
+export const poly = (pts, close = true) => 'M' + pts.map(([x, y]) => `${n2(x)} ${n2(y)}`).join(' L') + (close ? 'Z' : '');
 
 // mancha irregular (pedra, poça, aguada)
-function blob(cx, cy, r, rand, jag = 0.15, n = 10, sy = 1) {
+export function blob(cx, cy, r, rand, jag = 0.15, n = 10, sy = 1) {
   const pts = [];
   for (let i = 0; i < n; i++) {
     const a = (i / n) * Math.PI * 2;
@@ -53,18 +53,18 @@ function blob(cx, cy, r, rand, jag = 0.15, n = 10, sy = 1) {
 }
 
 // estrela de quatro pontas com lados côncavos
-const star4 = (cx, cy, r, k = r * 0.18) =>
+export const star4 = (cx, cy, r, k = r * 0.18) =>
   `M${cx} ${cy - r} Q${cx + k} ${cy - k} ${cx + r} ${cy} Q${cx + k} ${cy + k} ${cx} ${cy + r} Q${cx - k} ${cy + k} ${cx - r} ${cy} Q${cx - k} ${cy - k} ${cx} ${cy - r}Z`;
-const spark = (x, y, r) => `<path fill="${P}" stroke="${K}" stroke-width=".9" stroke-linejoin="round" d="${star4(x, y, r, r * 0.16)}"/>`;
+export const spark = (x, y, r) => `<path fill="${P}" stroke="${K}" stroke-width=".9" stroke-linejoin="round" d="${star4(x, y, r, r * 0.16)}"/>`;
 
 // raio em camadas: tinta grossa por baixo, cor no meio, fio claro no centro
-const zap = (d, c, w = 3) => `
+export const zap = (d, c, w = 3) => `
   <path d="${d}" fill="none" stroke="${K}" stroke-width="${w + 3}" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="${d}" fill="none" stroke="${P}" stroke-width="${n2(w * 0.3)}" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".9"/>`;
 
 // linha quebrada entre dois pontos (arco elétrico)
-function jagged(x0, y0, x1, y1, rand, steps = 7, amp = 5) {
+export function jagged(x0, y0, x1, y1, rand, steps = 7, amp = 5) {
   const pts = [[x0, y0]];
   const dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len;
   for (let i = 1; i < steps; i++) {
@@ -96,7 +96,7 @@ function stipple(rand, n, inside, c = K, rmax = 0.7) {
 }
 
 // aguada de fundo: mancha de aquarela na cor do elemento, com borda mais escura onde a tinta secou
-function wash(c, rand) {
+export function wash(c, rand) {
   return `
   <path fill="${c}" fill-opacity=".16" stroke="${c}" stroke-opacity=".35" stroke-width=".8" d="${blob(32, 33, 27, rand, 0.1, 12)}"/>
   <path fill="${c}" fill-opacity=".12" stroke="none" d="${blob(30, 30, 18, rand, 0.2, 8)}"/>
@@ -106,7 +106,7 @@ function wash(c, rand) {
 // marquinhas rúnicas em volta de um círculo
 const GLYPHS = ['M-1.6 -2 L1.6 2 M1.6 -2 L-1.6 2', 'M0 -2.2 V2.2 M-1.6 -0.6 H1.6', 'M-1.6 2 L0 -2 L1.6 2', 'M-1.5 -2 H1.5 L-1.5 2 H1.5',
   'M0 -2.2 V2.2 M0 -1 L1.6 -2.2 M0 0.6 L-1.6 -0.6', 'M-1.6 -1.6 A1.8 1.8 0 1 0 1.6 -1.6', 'M-1.6 -2 V2 H1.6', 'M0 -2.2 L1.8 0 L0 2.2 L-1.8 0Z'];
-function runes(cx, cy, r, n, rand, sy = 1, w = 0.9) {
+export function runes(cx, cy, r, n, rand, sy = 1, w = 0.9) {
   let s = '';
   for (let i = 0; i < n; i++) {
     const a = (i / n) * Math.PI * 2 - Math.PI / 2;
@@ -118,7 +118,7 @@ function runes(cx, cy, r, n, rand, sy = 1, w = 0.9) {
 }
 
 // chama em leque: pontas alternadas no aro, de a0 a a1 (radianos)
-function flameFan(ox, oy, R, a0, a1, tongues, rand) {
+export function flameFan(ox, oy, R, a0, a1, tongues, rand) {
   const pts = [];
   const n = tongues * 2;
   for (let i = 0; i <= n; i++) {
@@ -538,6 +538,7 @@ const DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="t
   ${rad('ink-cloud', [[0, '#eee8d6'], [0.6, '#aaa390'], [1, '#6d665a']])}
   ${lin('ink-gold', [[0, '#fff2b8'], [0.5, '#e6c93a'], [1, '#a8861c']])}
   ${lin('ink-ice', [[0, '#f4fbff'], [0.5, '#bfe8f2'], [1, ELEM.nature.color]], 1, 1)}
+  ${lin('ink-steel', [[0, '#f2f0ea'], [0.5, '#a9a8a2'], [1, '#5d5b56']], 1, 1)}
   ${lin('ink-beam', [[0, ELEM.energy.color], [0.5, mix(ELEM.energy.color, P, 0.5)], [1, ELEM.energy.color]])}
 </defs></svg>`;
 document.body.insertAdjacentHTML('beforeend', DEFS);
