@@ -47,12 +47,29 @@ function fireBolt(sp, c, ox, oz, i) {
   const arrow = has(sp, 'magic_arrow');
   for (const [dx, dz] of dirs) {
     const v = 17 * c.speed;
+    if (G.cls?.morph && !arrow && Math.random() < G.cls.morph) { morphBolt(ox, oz, dx, dz, v, c); continue; }
     shoot({
       kind: arrow ? 'shard' : 'bolt', x: ox, z: oz, y: 0.9, vx: dx * v, vz: dz * v, r: 0.32 * c.size, s: 0.55 * c.size,
       ry: Math.atan2(dx, dz), dmg: c.dmg, pierce: arrow ? Infinity : 1, life: arrow ? 1.6 : 1.3, color: COL.arcane,
       onEnd: has(sp, 'fireworks') ? (p) => fireworks(p, c) : null,
     });
   }
+}
+
+// Ilusionista: o projétil vira Choque Elétrico, Bola de Fogo, Espírito ou Raio de Energia
+const MORPH = [
+  { kind: 'shard', color: COL.storm, update: (p) => { p.ry += rand(-0.6, 0.6); } },
+  { kind: 'orb', color: COL.fire, s: 1.4, boom: true },
+  { kind: 'bolt', color: COL.energy },
+  { kind: 'orb', color: [1.5, 0.8, 1.5], pierce: 3 },
+];
+function morphBolt(x, z, dx, dz, v, c) {
+  const m = MORPH[randi(MORPH.length)], k = m.s || 1;
+  shoot({
+    kind: m.kind, x, z, y: 0.9, vx: dx * v, vz: dz * v, ry: Math.atan2(dx, dz), r: 0.32 * c.size * k, s: 0.55 * c.size * k,
+    dmg: c.dmg, pierce: m.pierce || 1, life: 1.3, color: m.color, update: m.update,
+    onEnd: m.boom ? (p) => explode(p.x, p.z, 1.8 * c.size, c.dmg * 0.5, { color: COL.fire }) : null,
+  });
 }
 
 function fireworks(p, c) {

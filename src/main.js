@@ -14,6 +14,7 @@ import { initInput } from './game/input.js';
 import { learn, updateSpells, drawSpells, grantAll, combosReady, activateCombo } from './game/spells/index.js';
 import { timers } from './game/spells/core.js';
 import * as UI from './game/ui.js';
+import { CLASS_BY_ID } from './data/classes.js';
 
 // ---------- renderização ----------
 const canvas = document.getElementById('game');
@@ -186,8 +187,25 @@ function newRun() {
   G.hooks.onKill = new Set([(e) => {
     if (G.cloaked > 0 && G.spells.cloaking?.soulHarvest) G.player.hp = Math.min(G.player.maxHp, G.player.hp + G.player.maxHp * 0.001);
   }]);
+  applyClass();
   UI.refreshBuild();
   G.running = true;
+}
+
+// Classe escolhida na tela inicial: magias, passivas e especiais de saída
+function applyClass() {
+  const cls = (G.cls = CLASS_BY_ID[UI.chosenClass()]);
+  for (const [id, n] of Object.entries(cls.start || {})) for (let i = 0; i < n; i++) learn(id);
+  Object.assign(G.passives, cls.passives);
+  for (const id of cls.specials || []) G.specials.add(id);
+  recomputeStats();
+  G.player.hp = G.player.maxHp;
+  if (cls.startLevel) { G.level += cls.startLevel; G.pendingLevels += cls.startLevel; }
+  // Mago Negro: inimigo explode ao morrer com 75% do próprio HP máximo
+  if (cls.killBlast) G.hooks.onKill.add((e) => {
+    if (Math.random() < cls.killBlast) CB.explode(e.x, e.z, 2.4, e.maxHp * 0.75, { color: [0.7, 0.35, 1.2] });
+  });
+  G.ui.banner(cls.name);
 }
 
 G.spawnChest = PK.spawnChest;

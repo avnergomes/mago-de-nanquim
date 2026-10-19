@@ -10,6 +10,7 @@ const P = () => G.player;
 export function shield(sp, dt, c) {
   const max = c.num;
   sp.st.charges ??= max;
+  sp.st.amp = (G.cls?.shieldAmp || 0) * sp.st.charges;
   if (sp.st.charges < max) {
     sp.t -= dt;
     if (sp.t <= 0) { sp.t = c.cd; sp.st.charges = Math.min(max, sp.st.charges + (has(sp, 'reconstruct') ? 2 : 1)); }

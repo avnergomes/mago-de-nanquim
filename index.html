@@ -44,11 +44,14 @@
   <div id="joy-knob"></div>
 
   <div id="start" class="modal show">
-    <div class="sheet">
+    <div class="sheet wide">
       <h1>Mago de <span>Nanquim</span></h1>
       <p class="lead">Um sobrevivente de horda em 3D, desenhado à mão.</p>
       <p>Sobreviva 20 minutos à horda. As magias disparam sozinhas; você só precisa se mover.<br>
         Suba de nível, combine atributos e libere os 25 combos.</p>
+      <h2 class="pick">Escolha sua classe</h2>
+      <div id="class-grid"></div>
+      <div id="class-info" class="card"></div>
       <p class="keys"><kbd>W A S D</kbd> ou setas para andar · arraste na tela no celular · <kbd>1-4</kbd> escolhe cartas · <kbd>Esc</kbd> pausa</p>
       <button id="start-btn" class="btn">Começar</button>
       <button id="install-btn" class="btn" hidden>Instalar no aparelho</button>
@@ -62,6 +65,7 @@
       <h2 id="choice-title"></h2>
       <p id="choice-sub"></p>
       <div id="choice-cards"></div>
+      <button id="choice-skip" class="btn" hidden></button>
     </div>
   </div>
 

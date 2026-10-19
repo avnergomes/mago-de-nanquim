@@ -16,11 +16,18 @@ export function calc(sp) {
     cdMul *= m.cdMul ?? 1; cdAdd += m.cdAdd ?? 0; sizeMul *= m.sizeMul ?? 1;
     durMul *= m.durMul ?? 1; speedMul *= m.speedMul ?? 1; intervalMul *= m.intervalMul ?? 1;
   }
+  const cls = G.cls, cm = cls?.mods?.[d.id];
+  if (cm) {
+    dmgMul *= cm.dmgMul ?? 1; numAdd += cm.numAdd ?? 0; numMul *= cm.numMul ?? 1; cdMul *= cm.cdMul ?? 1;
+    sizeMul *= cm.sizeMul ?? 1; speedMul *= cm.speedMul ?? 1; intervalMul *= cm.intervalMul ?? 1;
+  }
+  if (cls?.lvlDmg && cls.spell === d.id) dmgMul *= 1 + cls.lvlDmg * Math.floor(G.level / 5);
+  const lvlMagic = (cls?.perLvlDmg || 0) * G.level;
   const atk = ATK_BASE * (1 + st.atk) * (1 + st.amp + G.buff.amp + (G.runes.frenzy > 0 ? 0.5 : 0));
   const elemMul = 1 + (st.elem[d.elem] || 0);
   const cdr = Math.min(0.6, st.cdr + G.buff.cdr);
   return {
-    dmg: (b.dmg / 100) * atk * (1 + dmg) * dmgMul * elemMul * (1 + st.magicDmg),
+    dmg: (b.dmg / 100) * atk * (1 + dmg) * dmgMul * elemMul * (1 + st.magicDmg + lvlMagic),
     num: Math.max(1, Math.round((b.num + num + numAdd) * numMul)),
     cd: Math.max(0.08, (b.cd * (1 - cd) * cdMul + cdAdd) * (1 - cdr)),
     size: (1 + size) * sizeMul * (1 + st.size),

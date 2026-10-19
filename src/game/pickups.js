@@ -38,7 +38,7 @@ export function dropLoot(e) {
   if (roll < 0.006) addItem('life', e.x, e.z);
   else if (roll < 0.008) addItem('rune', e.x, e.z, { rune: RUNES[(Math.random() * RUNES.length) | 0] });
   // baú comum a cada 250 abates
-  if (++killChest >= 250) { killChest = 0; const a = Math.random() * 6.28; spawnChest(G.player.x + Math.cos(a) * 9, G.player.z + Math.sin(a) * 9); }
+  if (++killChest >= 250 / (G.cls?.chestFreq || 1)) { killChest = 0; const a = Math.random() * 6.28; spawnChest(G.player.x + Math.cos(a) * 9, G.player.z + Math.sin(a) * 9); }
 }
 export function resetLoot() { killChest = 0; }
 

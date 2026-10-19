@@ -1,7 +1,7 @@
 // Service worker: guarda o jogo inteiro no aparelho para abrir offline.
 // files.json é gerado por scripts/build-site.sh com a lista de todos os arquivos publicados.
 // Estratégia: responde do cache na hora e atualiza em segundo plano; a versão nova vale na próxima abertura.
-const CACHE = 'nanquim-v1';
+const CACHE = 'nanquim-v2';
 
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {

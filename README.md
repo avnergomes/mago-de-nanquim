@@ -1,6 +1,6 @@
-# Magic Survival 3D
+# Mago de Nanquim
 
-Releitura em 3D, para navegador, do jogo Android *Magic Survival* (LEME). Mantém a arte do original
+Projeto de fã, sem fins comerciais e sem vínculo oficial. Releitura em 3D, para navegador, do jogo Android *Magic Survival* (LEME). Mantém a arte do original
 (espíritos mutantes como manchas de nanquim espinhosas com núcleo colorido, pisos chapados por setor,
 mago em silhueta preta) e adiciona volume 3D, contorno de tinta com traço que "ferve" a 8 quadros/s
 e câmera em perspectiva inclinada atrás do mago.
@@ -26,19 +26,21 @@ docker compose up -d --build
 
 Tudo roda offline depois do build (o three.js 0.186.1 é copiado para dentro da imagem).
 
-## Publicar como PWA (link para instalar no celular)
+## Publicar no GitHub Pages (link para instalar como app)
 
-```bash
-sh build-dist.sh   # gera ./dist com o jogo, manifesto, ícones e service worker
-```
+O repositório já vem pronto: `.github/workflows/pages.yml` monta o site com `scripts/build-site.sh`
+(o mesmo script do Dockerfile) e publica a cada push na `main`.
 
-Arraste a pasta `dist` em https://app.netlify.com/drop (ou suba em Cloudflare Pages / GitHub Pages).
-O link precisa ser HTTPS, o que essas hospedagens já dão. Quem abrir vê o botão "Instalar no aparelho"
-(Android e Chrome/Edge no PC); no iPhone, Compartilhar e "Adicionar à Tela de Início".
-Depois da primeira abertura o jogo funciona sem internet.
+1. Repositório **público** no GitHub (Pages grátis só em repositório público).
+2. Em Settings > Pages > Build and deployment, **Source: GitHub Actions**.
+3. A cada push na `main`, a aba Actions publica em `https://<usuario>.github.io/<repositorio>/`.
 
-Para publicar uma versão nova, troque `CACHE` em `sw.js` (ex.: `ms3d-v2`), gere de novo e suba:
-quem já instalou recebe a atualização na abertura seguinte.
+Funciona em subcaminho (`/mago-de-nanquim/`) porque todos os caminhos são relativos. Quem abrir vê o
+botão "Instalar no aparelho" (Android e Chrome/Edge no PC); no iPhone, Compartilhar e "Adicionar à
+Tela de Início". Depois da primeira abertura o jogo funciona sem internet.
+
+Para outra hospedagem estática (Netlify Drop, Cloudflare Pages), `sh build-dist.sh` gera `./dist`.
+Ao publicar uma versão nova, troque `CACHE` em `sw.js` (ex.: `nanquim-v2`).
 
 Em `localhost` o service worker fica desligado (cada rebuild aparece na hora); teste o PWA em
 http://127.0.0.1:8080. O `window.dbg` só existe em localhost/127.0.0.1.
@@ -55,7 +57,16 @@ Dados extraídos do wiki da comunidade (magic-survival-rpg.fandom.com, versão 0
 
 - **17 magias de ataque + 4 utilitárias**, cada uma com seus níveis (7 ou 5) e os bônus exatos por nível.
 - **63 atributos** (3 por magia, escolhidos no nível máximo; o Projétil Mágico escolhe também no nível 4).
-- **8 passivas comuns**, **8 passivas de crescimento** (após o nível 100) e **23 passivas especiais** (vindas de baús de elites e chefInimigos, setores e itens também seguem o original (NamuWiki 매직서바이벌, seções 7.1 e 9, e capturas da Play Store):
+- **8 passivas comuns**, **8 passivas de crescimento** (após o nível 100) e **23 passivas especiais** (vindas de baús de elites e chefes).
+- **25 combos** com os pré-requisitos do wiki.
+- **24 classes** (wiki, página Classes), escolhidas na tela inicial. Cada classe ligada a uma magia começa com ela
+  2 níveis acima, ganha +3% de dano nela a cada 5 níveis, recarga/número/tamanho próprios e +20% de dano.
+  As especiais seguem as regras do original: Arcanista (+1% de dano por nível, uma carta a menos), Bispo
+  (+10% de ATK por escudo, Anjo da Guarda), Erudito e Arquimago (começam 3 níveis acima), Arqueólogo (baú a
+  cada 15 níveis), Ilusionista (30% de chance de o projétil virar outra magia) e Mago Negro (inimigos explodem
+  com 75% do HP máximo).
+
+Inimigos, setores e itens também seguem o original (NamuWiki 매직서바이벌, seções 7.1 e 9, e capturas da Play Store):
 
 - **14 espíritos mutantes**: Swarm (rola como capim seco), Scarab e Interceptor (voam reto e explodem ao tocar),
   Corrupt (explode ao morrer), Mine, Rampage e Invader (aceleram ao serem atingidos), Hive, Overlord (cresce ao
@@ -74,11 +85,12 @@ O que é criação desta releitura:
   mais parecido; estão marcados com `guess: true` em `src/data/combos.js`.
 - Números de HP, dano e velocidade dos inimigos (o jogo não os publica) e a curva de dificuldade.
 - Baús e Caixa Preta dão passivas especiais, já que artefatos estão fora do escopo.
+- Classes: no original elas sobem de nível com material de pesquisa; aqui a classe escolhida já vem com os
+  bônus dos níveis 1 a 5. O botão "Recuperar mana" (pular a escolha de nível) devolve 50% da mana do nível;
+  o valor base é estimativa, já que o wiki não publica. O bônus de dano dos combos do Arquimago vale para os efeitos-assinatura dos combos.
+- Vitória aos 20 min, depois modo infinito.
 
- Atlas aos 10, Terra aos 15) e curva de dificuldade.
-  Vitória aos 20 min, depois modo infinito.
-
-Fora do escopo: artefatos, classes (학파), progressão permanente entre partidas (pesquisa, ouro) e som.
+Fora do escopo: artefatos, progressão permanente entre partidas (pesquisa, ouro) e som.
 
 ## Estrutura
 

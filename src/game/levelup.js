@@ -39,7 +39,8 @@ export function levelOptions() {
     if (G.level >= G.stats.maxLevel) pool = pool.filter(o => o.kind === 'growth' || o.kind === 'combo');
   }
   if (!pool.length) pool.push({ kind: 'heal', icon: '❤', title: 'Poção', sub: 'Recuperação', desc: 'Recupera 30% do HP.', weight: 1, apply: () => { G.player.hp = Math.min(G.player.maxHp, G.player.hp + G.player.maxHp * 0.3); } });
-  return weightedPick(pool, 3 + (G.extraChoice ? 1 : 0));
+  const four = G.extraChoice || Math.random() < (G.cls?.fourChance || 0);
+  return weightedPick(pool, 3 + (four ? 1 : 0) + (G.cls?.choices || 0));
 }
 
 function weightedPick(pool, n) {

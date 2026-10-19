@@ -14,6 +14,7 @@ export function recomputeStats() {
   for (const ps of PASSIVES) for (let i = 0; i < (G.passives[ps.id] || 0); i++) ps.apply(st);
   for (const gp of GROWTH) for (let i = 0; i < (G.growth[gp.id] || 0); i++) gp.apply(st);
   for (const sp of SPECIALS) if (G.specials.has(sp.id) && sp.id !== 'noblesse') sp.apply(st, G);
+  G.cls?.stats?.(st);
   st.revive -= G.usedRevives || 0;
   const p = G.player;
   const ratio = p.hp / p.maxHp;
@@ -75,6 +76,7 @@ export function gainXp(x) {
     G.xp -= need;
     G.level++;
     G.pendingLevels++;
+    if (G.cls?.chestEvery && G.level % G.cls.chestEvery === 0) G.spawnChest(G.player.x + 3, G.player.z + 2);
     need = xpNeeded(G.level);
   }
 }

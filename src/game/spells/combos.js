@@ -7,7 +7,7 @@ import { fireRay, nova, lavaPool } from './attack2.js';
 
 // Efeitos-assinatura dos combos. O wiki só lista os pré-requisitos; os efeitos são desta releitura.
 const P = () => G.player;
-const C = (id) => calc(G.spells[id]);
+const C = (id) => { const c = calc(G.spells[id]); c.dmg *= 1 + (G.cls?.comboDmg || 0); return c; };
 const around = (r) => { const a = rand(TAU), d = Math.sqrt(Math.random()) * r; return [P().x + Math.cos(a) * d, P().z + Math.sin(a) * d]; };
 const target = (r = 14) => { const t = randomNear(P().x, P().z, r); return t ? [t.x, t.z] : around(r * 0.7); };
 const hook = (name, fn) => (G.hooks[name] ??= new Set()).add(fn);

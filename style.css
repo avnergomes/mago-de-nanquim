@@ -99,3 +99,15 @@ kbd { font-family: inherit; border: 1.5px solid var(--ink); border-radius: 5px; 
 .sp span { width: 34px; height: 34px; display: grid; place-items: center; }
 .sum .glyph { width: 1.4em; height: 1.4em; display: inline-block; vertical-align: -0.35em; }
 @media (max-width: 700px) { .sp span { width: 24px; height: 24px; } }
+/* escolha de classe */
+h2.pick { font-size: 22px; margin: 10px 0 6px; }
+#class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
+.cls { font: inherit; color: var(--ink); cursor: pointer; display: grid; justify-items: center; gap: 2px; padding: 6px 2px;
+  background: color-mix(in srgb, var(--accent) 10%, #fffbe9); border: 2px solid var(--ink); border-radius: 9px 12px 8px 13px; }
+.cls span { width: 34px; height: 34px; display: grid; place-items: center; font-size: 22px; }
+.cls small { font-size: 11px; line-height: 1.1; }
+.cls[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 40%, var(--paper)); box-shadow: 2px 3px 0 var(--ink); transform: translateY(-2px) rotate(-1deg); }
+#class-info { cursor: default; margin: 10px 0 4px; }
+#class-info:hover { transform: none; }
+#class-info ul { margin: 4px 0 0; padding-left: 18px; font-family: system-ui, sans-serif; font-size: 13px; line-height: 1.35; }
+@media (max-width: 640px) { #class-grid { grid-template-columns: repeat(6, 1fr); } .cls small { display: none; } .cls span { width: 28px; height: 28px; } }

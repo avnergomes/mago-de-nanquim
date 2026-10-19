@@ -1,9 +1,14 @@
 import { G, xpNeeded } from './state.js';
-import { ELEM, maxLevel } from '../data/spells.js';
+
+// Recuperar mana: pula a escolha e devolve parte da mana do nível.
+// ponytail: 50% é estimativa; o wiki não publica o valor base.
+const MANA_BACK = 0.5;
+import { ELEM, SPELL_BY_ID, maxLevel } from '../data/spells.js';
 import { COMBOS } from '../data/combos.js';
 import { PASSIVES, SPECIALS } from '../data/passives.js';
 import { levelOptions, attrOptions, chestOptions } from './levelup.js';
 import { spellIcon } from '../render/icons.js';
+import { CLASSES, CLASS_BY_ID } from '../data/classes.js';
 
 const $ = (id) => document.getElementById(id);
 const fmtTime = (t) => `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
@@ -22,7 +27,7 @@ async function runQueue() {
   modalOpen = false;
 }
 
-function choose(title, subtitle, options, cls = '') {
+function choose(title, subtitle, options, cls = '', skip = null) {
   return new Promise((resolve) => {
     const box = $('choice');
     box.className = `modal show ${cls}`;
@@ -39,6 +44,9 @@ function choose(title, subtitle, options, cls = '') {
       el.onclick = () => done(o);
       cards.appendChild(el);
     });
+    const sk = $('choice-skip');
+    sk.hidden = !skip;
+    if (skip) { sk.textContent = skip.title; sk.onclick = () => done(skip); }
     const onKey = (e) => { const n = +e.key; if (n >= 1 && n <= options.length) done(options[n - 1]); };
     addEventListener('keydown', onKey);
     function done(o) {
@@ -53,7 +61,9 @@ export function pumpLevelUps() {
   if (modalOpen || G.pendingLevels <= 0 || G.over) return;
   G.pendingLevels--;
   enqueue(async () => {
-    const o = await choose('Subiu de nível!', `Nível ${G.level - G.pendingLevels}. Escolha uma melhoria.`, levelOptions());
+    const lvl = G.level - G.pendingLevels, back = MANA_BACK * (G.cls?.manaBack ?? 1);
+    const skip = back > 0 ? { title: `Recuperar mana (${Math.round(back * 100)}%)`, apply: () => G.gainXp(xpNeeded(lvl - 1) * back) } : null;
+    const o = await choose('Subiu de nível!', `Nível ${lvl}. Escolha uma melhoria.`, levelOptions(), '', skip);
     const res = o.apply();
     if (res?.attrFor) {
       const a = await choose('Atributo desbloqueado', 'Escolha como esta magia vai evoluir. Atributos certos liberam combos.', attrOptions(res.attrFor, res.tier), 'attr');
@@ -63,7 +73,36 @@ export function pumpLevelUps() {
   });
 }
 
+// ---------- escolha de classe (tela inicial) ----------
+let classId = 'wizard';
+try { const saved = localStorage.getItem('nanquim-class'); if (CLASS_BY_ID[saved]) classId = saved; } catch {}
+export const chosenClass = () => classId;
+const classIcon = (c) => (c.icon ? esc(c.icon) : spellIcon(c.spell));
+const classColor = (c) => (c.spell ? ELEM[SPELL_BY_ID[c.spell].elem].color : '#8a6a3a');
+
+function initClassPicker() {
+  const grid = $('class-grid');
+  const show = () => {
+    const c = CLASS_BY_ID[classId];
+    for (const b of grid.children) b.setAttribute('aria-pressed', b.dataset.id === classId);
+    $('class-info').style.setProperty('--accent', classColor(c));
+    $('class-info').innerHTML = `<div class="ic">${classIcon(c)}</div><div><b>${esc(c.name)}</b> <i>${esc(c.en)}</i><ul>${c.perks.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  };
+  for (const c of CLASSES) {
+    const b = document.createElement('button');
+    b.className = 'cls';
+    b.dataset.id = c.id;
+    b.title = c.name;
+    b.style.setProperty('--accent', classColor(c));
+    b.innerHTML = `<span>${classIcon(c)}</span><small>${esc(c.name)}</small>`;
+    b.onclick = () => { classId = c.id; try { localStorage.setItem('nanquim-class', classId); } catch {} show(); };
+    grid.appendChild(b);
+  }
+  show();
+}
+
 export function initUI() {
+  initClassPicker();
   G.ui = {
     banner(msg) {
       const b = $('banner');
@@ -125,7 +164,7 @@ export function buildSummary() {
 
 export function showEnd(victory) {
   $('end-title').textContent = victory ? 'Você sobreviveu!' : 'Fim da jornada';
-  $('end-stats').innerHTML = `<p>Tempo ${fmtTime(G.t)} · Nível ${G.level} · ${G.kills} inimigos</p>${buildSummary()}`;
+  $('end-stats').innerHTML = `<p>${esc(G.cls?.name ?? '')} · Tempo ${fmtTime(G.t)} · Nível ${G.level} · ${G.kills} inimigos</p>${buildSummary()}`;
   $('end-continue').style.display = victory ? 'inline-block' : 'none';
   $('end').className = 'modal show';
 }
