@@ -99,6 +99,9 @@ kbd { font-family: inherit; border: 1.5px solid var(--ink); border-radius: 5px; 
 .card .ic .glyph { width: 44px; height: 44px; }
 .sp span { width: 34px; height: 34px; display: grid; place-items: center; }
 .tr .glyph { width: 1.5em; height: 1.5em; display: inline-block; vertical-align: -0.4em; margin-right: 2px; }
+.sign { width: 0.9em; height: 0.9em; display: inline-block; vertical-align: -0.1em; }
+.mini .glyph { width: 1.4em; height: 1.4em; display: inline-block; vertical-align: -0.4em; }
+#pause-btn .sign { width: 14px; height: 14px; vertical-align: -2px; }
 .sum .glyph { width: 1.4em; height: 1.4em; display: inline-block; vertical-align: -0.35em; }
 @media (max-width: 700px) { .sp span { width: 24px; height: 24px; } }
 /* escolha de classe */

@@ -10,10 +10,14 @@ import { levelOptions, attrOptions, chestOptions } from './levelup.js';
 import { spellIcon } from '../render/icons.js';
 import { classIcon as classArt, classColor } from '../render/classIcons.js';
 import { treasureIcon } from '../render/treasureIcons.js';
+import { passiveIcon, cardIcon, signIcon } from '../render/uiIcons.js';
 import { CLASSES, CLASS_BY_ID } from '../data/classes.js';
 
 const $ = (id) => document.getElementById(id);
 const fmtTime = (t) => `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+// ilustração de uma carta de escolha: combo e cura têm desenho próprio; o resto vem do id
+const optionIcon = (o) => cardIcon(o.kind) ?? spellIcon(o.spell ?? o.id) ?? treasureIcon(o.id) ?? passiveIcon(o.id) ?? '';
+const mini = (svg) => `<span class="mini">${svg}</span>`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 let modalOpen = false;
@@ -42,7 +46,7 @@ function choose(title, subtitle, options, cls = '', skip = null) {
       el.className = `card kind-${o.kind}`;
       const col = o.elem ? ELEM[o.elem].color : o.kind === 'combo' ? '#d4a73a' : o.kind === 'special' ? '#c0508a' : o.kind === 'artifact' ? '#e6c93a' : '#5a7a5a';
       el.style.setProperty('--accent', col);
-      el.innerHTML = `<div class="ic">${spellIcon(o.spell ?? o.id) ?? treasureIcon(o.id) ?? esc(o.icon || '?')}</div><div class="tx"><b>${esc(o.title)}</b><i>${esc(o.sub || '')}</i><p>${esc(o.desc).replace(/\n/g, '<br>')}</p></div><kbd>${i + 1}</kbd>`;
+      el.innerHTML = `<div class="ic">${optionIcon(o)}</div><div class="tx"><b>${esc(o.title)}</b><i>${esc(o.sub || '')}</i><p>${esc(o.desc).replace(/\n/g, '<br>')}</p></div><kbd>${i + 1}</kbd>`;
       el.onclick = () => done(o);
       cards.appendChild(el);
     });
@@ -79,7 +83,7 @@ export function pumpLevelUps() {
 let classId = 'wizard';
 try { const saved = localStorage.getItem('nanquim-class'); if (CLASS_BY_ID[saved]) classId = saved; } catch {}
 export const chosenClass = () => classId;
-const classIcon = (c) => classArt(c.id) ?? (c.icon ? esc(c.icon) : spellIcon(c.spell));
+const classIcon = (c) => classArt(c.id) ?? spellIcon(c.spell) ?? '';
 
 function initClassPicker() {
   const grid = $('class-grid');
@@ -104,6 +108,7 @@ function initClassPicker() {
 
 export function initUI() {
   initClassPicker();
+  $('pause-btn').innerHTML = signIcon('pause');
   G.ui = {
     banner(msg) {
       const b = $('banner');
@@ -129,7 +134,7 @@ export function updateHUD(dt) {
   if (hudT > 0) return;
   hudT = 0.2;
   $('timer').textContent = fmtTime(G.t);
-  $('kills').textContent = `☠ ${G.kills}`;
+  $('kills').innerHTML = `${signIcon('kills')} ${G.kills}`;
   $('lvl').textContent = `Nv ${G.level}`;
   $('hp-txt').textContent = `${Math.ceil(p.hp)} / ${Math.ceil(p.maxHp)}`;
   const boss = document.querySelector('#bossbar');
@@ -137,27 +142,27 @@ export function updateHUD(dt) {
   if (b && b.alive) { boss.style.display = 'block'; $('boss-fill').style.width = `${(b.hp / b.maxHp) * 100}%`; $('boss-name').textContent = b.def.name; }
   else boss.style.display = 'none';
   const cl = G.spells.cloaking, ar = G.spells.armageddon;
-  $('cds').innerHTML = [cl && `👁 ${G.cloaked > 0 ? 'ativa' : cl.t > 0 ? Math.ceil(cl.t) + 's' : 'pronta'}`, ar && `☢ ${Math.max(0, Math.ceil(ar.t))}s`,
-    G.runes.inv > 0 && `✧ invencível ${Math.ceil(G.runes.inv)}s`, G.runes.frenzy > 0 && `✦ frenesi ${Math.ceil(G.runes.frenzy)}s`, G.runes.greed > 0 && `◈ ganância ${Math.ceil(G.runes.greed)}s`, G.spells.shield && `🛡 ${G.spells.shield.st.charges ?? 0}`].filter(Boolean).join(' · ');
+  $('cds').innerHTML = [cl && `${mini(spellIcon('cloaking'))} ${G.cloaked > 0 ? 'ativa' : cl.t > 0 ? Math.ceil(cl.t) + 's' : 'pronta'}`, ar && `${mini(spellIcon('armageddon'))} ${Math.max(0, Math.ceil(ar.t))}s`,
+    G.runes.inv > 0 && `${signIcon('rune_inv')} invencível ${Math.ceil(G.runes.inv)}s`, G.runes.frenzy > 0 && `${signIcon('rune_frenzy')} frenesi ${Math.ceil(G.runes.frenzy)}s`, G.runes.greed > 0 && `${signIcon('rune_greed')} ganância ${Math.ceil(G.runes.greed)}s`, G.spells.shield && `${mini(spellIcon('shield'))} ${G.spells.shield.st.charges ?? 0}`].filter(Boolean).join(' · ');
 }
 
 export function refreshBuild() {
   const rows = Object.values(G.spells).map(sp => {
     const max = maxLevel(sp.def);
     const attrs = [...sp.attrs].map(id => sp.def.attrs.find(a => a.id === id).name).join(', ');
-    return `<div class="sp" style="--accent:${ELEM[sp.def.elem].color}" title="${esc(sp.def.name)}${attrs ? ': ' + esc(attrs) : ''}"><span>${spellIcon(sp.def.id) ?? esc(sp.def.icon)}</span><em>${sp.lvl >= max ? 'MAX' : sp.lvl}</em></div>`;
+    return `<div class="sp" style="--accent:${ELEM[sp.def.elem].color}" title="${esc(sp.def.name)}${attrs ? ': ' + esc(attrs) : ''}"><span>${spellIcon(sp.def.id)}</span><em>${sp.lvl >= max ? 'MAX' : sp.lvl}</em></div>`;
   });
   $('build').innerHTML = rows.join('');
   const combos = Object.keys(G.combos).map(id => COMBOS.find(c => c.id === id).name);
-  $('combos').innerHTML = combos.map(n => `<span>✸ ${esc(n)}</span>`).join('');
+  $('combos').innerHTML = combos.map(n => `<span>${mini(cardIcon('combo'))} ${esc(n)}</span>`).join('');
 }
 
 export function buildSummary() {
   const spells = Object.values(G.spells).map(sp => {
     const attrs = [...sp.attrs].map(id => sp.def.attrs.find(a => a.id === id).name);
-    return `<li><b>${spellIcon(sp.def.id) ?? esc(sp.def.icon)} ${esc(sp.def.name)}</b> nv ${sp.lvl}${attrs.length ? ` <i>(${esc(attrs.join(', '))})</i>` : ''}</li>`;
+    return `<li><b>${spellIcon(sp.def.id)} ${esc(sp.def.name)}</b> nv ${sp.lvl}${attrs.length ? ` <i>(${esc(attrs.join(', '))})</i>` : ''}</li>`;
   }).join('');
-  const pas = PASSIVES.filter(p => G.passives[p.id]).map(p => `${esc(p.name)} ${G.passives[p.id]}`).join(', ') || 'nenhuma';
+  const pas = PASSIVES.filter(p => G.passives[p.id]).map(p => `<span class="tr">${passiveIcon(p.id)}${esc(p.name)} ${G.passives[p.id]}</span>`).join(', ') || 'nenhuma';
   const tre = (list, set) => list.filter(t => set.has(t.id)).map(t => `<span class="tr">${treasureIcon(t.id) ?? ''}${esc(t.name)}</span>`).join(', ');
   const spc = tre(SPECIALS, G.specials) || 'nenhuma';
   const art = tre(ARTIFACTS, G.artifacts) || 'nenhum';

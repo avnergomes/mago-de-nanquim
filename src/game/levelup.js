@@ -5,27 +5,27 @@ import { COMBOS } from '../data/combos.js';
 import { learn, addAttr, combosReady, activateCombo } from './spells/index.js';
 import { recomputeStats } from './player.js';
 
-// Monta as opções de subida de nível. Cada opção: { kind, id, title, sub, desc, icon, elem, apply }
+// Monta as opções de subida de nível. Cada opção: { kind, id, title, sub, desc, elem, apply }
 export function levelOptions() {
   const opts = [];
   for (const cb of combosReady()) {
-    opts.push({ kind: 'combo', id: cb.id, icon: '✸', title: cb.name, sub: 'Combinação', desc: cb.desc, weight: 6, apply: () => activateCombo(cb.id) });
+    opts.push({ kind: 'combo', id: cb.id, title: cb.name, sub: 'Combinação', desc: cb.desc, weight: 6, apply: () => activateCombo(cb.id) });
   }
   for (const def of SPELLS) {
     const sp = G.spells[def.id];
     if (!sp) {
-      opts.push({ kind: 'new', id: def.id, icon: def.icon, elem: def.elem, title: def.name, sub: `${def.en} · Nova`, desc: def.desc, weight: def.utility ? 0.6 : 1, apply: () => learn(def.id) });
+      opts.push({ kind: 'new', id: def.id, elem: def.elem, title: def.name, sub: `${def.en} · Nova`, desc: def.desc, weight: def.utility ? 0.6 : 1, apply: () => learn(def.id) });
     } else if (sp.lvl < maxLevel(def)) {
       const L = def.levels[sp.lvl - 1];
       const desc = L === 'attr' ? 'Desbloqueia um atributo: escolha 1 de 3.' : describeLevel(L);
-      opts.push({ kind: 'up', id: def.id, icon: def.icon, elem: def.elem, title: def.name, sub: `Nível ${sp.lvl + 1}`, desc, weight: 1.6,
+      opts.push({ kind: 'up', id: def.id, elem: def.elem, title: def.name, sub: `Nível ${sp.lvl + 1}`, desc, weight: 1.6,
         apply: () => { learn(def.id); if (L === 'attr') return { attrFor: def.id, tier: sp.lvl }; } });
     }
   }
   for (const ps of PASSIVES) {
     const n = G.passives[ps.id] || 0;
     if (n < ps.max + G.stats.passiveBonus) {
-      opts.push({ kind: 'passive', id: ps.id, icon: ps.icon, title: ps.name, sub: `Passiva ${n + 1}/${ps.max + G.stats.passiveBonus}`, desc: ps.desc, weight: 0.9,
+      opts.push({ kind: 'passive', id: ps.id, title: ps.name, sub: `Passiva ${n + 1}/${ps.max + G.stats.passiveBonus}`, desc: ps.desc, weight: 0.9,
         apply: () => { G.passives[ps.id] = n + 1; recomputeStats(); } });
     }
   }
@@ -33,12 +33,12 @@ export function levelOptions() {
   if (G.level >= G.stats.maxLevel || pool.length < 3) {
     for (const gp of GROWTH) {
       const n = G.growth[gp.id] || 0;
-      if (n < gp.max) pool.push({ kind: 'growth', id: gp.id, icon: gp.icon, title: gp.name, sub: `Crescimento ${n + 1}/${gp.max}`, desc: gp.desc, weight: 1,
+      if (n < gp.max) pool.push({ kind: 'growth', id: gp.id, title: gp.name, sub: `Crescimento ${n + 1}/${gp.max}`, desc: gp.desc, weight: 1,
         apply: () => { G.growth[gp.id] = n + 1; recomputeStats(); } });
     }
     if (G.level >= G.stats.maxLevel) pool = pool.filter(o => o.kind === 'growth' || o.kind === 'combo');
   }
-  if (!pool.length) pool.push({ kind: 'heal', icon: '❤', title: 'Poção', sub: 'Recuperação', desc: 'Recupera 30% do HP.', weight: 1, apply: () => { G.player.hp = Math.min(G.player.maxHp, G.player.hp + G.player.maxHp * 0.3); } });
+  if (!pool.length) pool.push({ kind: 'heal', title: 'Poção', sub: 'Recuperação', desc: 'Recupera 30% do HP.', weight: 1, apply: () => { G.player.hp = Math.min(G.player.maxHp, G.player.hp + G.player.maxHp * 0.3); } });
   const four = G.extraChoice || Math.random() < (G.cls?.fourChance || 0);
   return weightedPick(pool, 3 + (four ? 1 : 0) + (G.cls?.choices || 0));
 }
@@ -71,7 +71,7 @@ export function attrOptions(spellId, atLevel) {
     .filter(a => !a.tier || a.tier === atLevel)
     .map(a => {
       const combo = COMBOS.filter(cb => (cb.a[0] === spellId && cb.a[1] === a.id) || (cb.b[0] === spellId && cb.b[1] === a.id));
-      return { kind: 'attr', id: a.id, spell: sp.def.id, icon: sp.def.icon, elem: sp.def.elem, title: a.name, sub: `${sp.def.name} · ${a.en}`,
+      return { kind: 'attr', id: a.id, spell: sp.def.id, elem: sp.def.elem, title: a.name, sub: `${sp.def.name} · ${a.en}`,
         desc: a.desc + (combo.length ? `\nCombo: ${combo.map(c => c.name).join(', ')}` : ''), apply: () => addAttr(spellId, a.id) };
     });
 }
@@ -88,7 +88,7 @@ export function chestOptions(sub = 'common') {
     const src = (wantArt && arts.length) || !relics.length ? arts : relics;
     if (src.length) out.push({ t: src.shift(), art: src === arts });
   }
-  if (!out.length) return [{ kind: 'heal', icon: '❤', title: 'Tesouro', sub: 'Baú', desc: 'Recupera todo o HP.', apply: () => { G.player.hp = G.player.maxHp; } }];
-  return out.map(({ t, art }) => ({ kind: art ? 'artifact' : 'special', id: t.id, icon: t.icon, title: t.name, sub: art ? 'Artefato' : 'Relíquia', desc: t.desc,
+  if (!out.length) return [{ kind: 'heal', title: 'Tesouro', sub: 'Baú', desc: 'Recupera todo o HP.', apply: () => { G.player.hp = G.player.maxHp; } }];
+  return out.map(({ t, art }) => ({ kind: art ? 'artifact' : 'special', id: t.id, title: t.name, sub: art ? 'Artefato' : 'Relíquia', desc: t.desc,
     apply: () => { (art ? G.artifacts : G.specials).add(t.id); recomputeStats(); if (t.id === 'noblesse') t.apply(G.stats, G); } }));
 }

@@ -89,7 +89,8 @@ O que é criação desta releitura:
   preço (o Grimório Proibido tira HP máximo). A Caixa Preta garante um artefato; no baú comum cada carta tem 15%
   de chance de ser artefato. Mecânicas novas: esquiva, dano extra contra elites e chefes, execução abaixo de 8%
   do HP e cura por abate.
-- Ícones de magias, classes e tesouros são ilustrações SVG geradas por código (`src/render/`).
+- Ícones de magias, classes, tesouros, passivas e HUD são ilustrações SVG geradas por código (`src/render/`).
+  O jogo não usa emojis: `node scripts/check-no-emoji.mjs` verifica isso e roda no GitHub Actions antes de publicar.
 - Classes: no original elas sobem de nível com material de pesquisa; aqui a classe escolhida já vem com os
   bônus dos níveis 1 a 5. O botão "Recuperar mana" (pular a escolha de nível) devolve 50% da mana do nível;
   o valor base é estimativa, já que o wiki não publica. O bônus de dano dos combos do Arquimago vale para os efeitos-assinatura dos combos.

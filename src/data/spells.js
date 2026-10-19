@@ -15,7 +15,7 @@ const A = 'attr';
 
 export const SPELLS = [
   {
-    id: 'magic_bolt', name: 'Projétil Mágico', en: 'Magic Bolt', elem: 'none', icon: '✦',
+    id: 'magic_bolt', name: 'Projétil Mágico', en: 'Magic Bolt', elem: 'none',
     desc: 'Dispara um projétil no inimigo mais próximo.',
     base: { dmg: 500, cd: 0.75, num: 1, size: 1 },
     levels: [{ num: 1 }, { dmg: 0.5 }, A, { num: 1 }, { dmg: 0.5 }, A],
@@ -29,7 +29,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'fireball', name: 'Bola de Fogo', en: 'Fireball', elem: 'fire', icon: '🔥',
+    id: 'fireball', name: 'Bola de Fogo', en: 'Fireball', elem: 'fire',
     desc: 'Lança um projétil explosivo.',
     base: { dmg: 700, cd: 1.5, num: 1, size: 1 },
     levels: [{ num: 1 }, { dmg: 0.5 }, { size: 0.2 }, { num: 1 }, { dmg: 0.5 }, A],
@@ -40,7 +40,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'thunderstorm', name: 'Tempestade de Raios', en: 'Thunderstorm', elem: 'storm', icon: '⚡',
+    id: 'thunderstorm', name: 'Tempestade de Raios', en: 'Thunderstorm', elem: 'storm',
     desc: 'Raios caem sobre inimigos próximos.',
     base: { dmg: 1500, cd: 2, num: 1, size: 1 },
     levels: [{ dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, A],
@@ -51,7 +51,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'meteor', name: 'Meteoro', en: 'Meteor', elem: 'fire', icon: '☄',
+    id: 'meteor', name: 'Meteoro', en: 'Meteor', elem: 'fire',
     desc: 'Um meteoro cai em um ponto aleatório.',
     base: { dmg: 1500, cd: 4.5, num: 1, size: 1 },
     levels: [{ num: 1 }, { dmg: 0.5 }, { size: 0.2 }, { num: 1 }, { dmg: 0.5 }, A],
@@ -62,7 +62,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'cyclone', name: 'Ciclone', en: 'Cyclone', elem: 'nature', icon: '🌀',
+    id: 'cyclone', name: 'Ciclone', en: 'Cyclone', elem: 'nature',
     desc: 'Uma rajada de vento que cresce e causa dano.',
     base: { dmg: 500, cd: 3.5, num: 1, size: 1, dur: 2, interval: 0.3 },
     levels: [{ num: 1 }, { dmg: 0.5 }, { dur: 0.3 }, { num: 1 }, { dmg: 0.5 }, A],
@@ -73,7 +73,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'electric_shock', name: 'Choque Elétrico', en: 'Electric Shock', elem: 'storm', icon: 'ϟ',
+    id: 'electric_shock', name: 'Choque Elétrico', en: 'Electric Shock', elem: 'storm',
     desc: 'Libera eletricidade em direções aleatórias.',
     base: { dmg: 500, cd: 2, num: 2, size: 1 },
     levels: [{ dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, A],
@@ -84,7 +84,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'energy_bolt', name: 'Raio de Energia', en: 'Energy Bolt', elem: 'energy', icon: '✺',
+    id: 'energy_bolt', name: 'Raio de Energia', en: 'Energy Bolt', elem: 'energy',
     desc: 'Dispara projéteis perfurantes próximos.',
     base: { dmg: 750, cd: 3.3, num: 5, size: 1, dur: 1.1 },
     levels: [{ dmg: 0.2, num: 2 }, { dmg: 0.2, num: 2 }, { dmg: 0.2, num: 2 }, { dmg: 0.2, num: 2 }, { dmg: 0.2, num: 2 }, A],
@@ -95,7 +95,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'incineration', name: 'Incineração', en: 'Incineration', elem: 'fire', icon: '♨',
+    id: 'incineration', name: 'Incineração', en: 'Incineration', elem: 'fire',
     desc: 'Lança chamas à frente do personagem.',
     base: { dmg: 500, cd: 4, num: 15, size: 1 },
     levels: [{ num: 6 }, { dmg: 0.5 }, { size: 0.2 }, { num: 6 }, { dmg: 0.5 }, A],
@@ -106,7 +106,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'blizzard', name: 'Nevasca', en: 'Blizzard', elem: 'nature', icon: '❄',
+    id: 'blizzard', name: 'Nevasca', en: 'Blizzard', elem: 'nature',
     desc: 'Ergue uma nevasca que congela inimigos.',
     base: { dmg: 700, cd: 6, num: 20, size: 1 },
     levels: [{ num: 6 }, { dmg: 0.5 }, { cd: 0.15 }, { num: 6 }, { dmg: 0.5 }, A],
@@ -117,7 +117,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'tsunami', name: 'Tsunami', en: 'Tsunami', elem: 'nature', icon: '🌊',
+    id: 'tsunami', name: 'Tsunami', en: 'Tsunami', elem: 'nature',
     desc: 'Uma onda gigante atravessa o campo.',
     base: { dmg: 700, cd: 8.5, num: 8, size: 1 },
     levels: [{ num: 3 }, { dmg: 0.5 }, { cd: 0.15 }, { num: 3 }, { dmg: 0.5 }, A],
@@ -128,7 +128,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'spirit', name: 'Espírito', en: 'Spirit', elem: 'energy', icon: '👻',
+    id: 'spirit', name: 'Espírito', en: 'Spirit', elem: 'energy',
     desc: 'Invoca espíritos que atacam junto com você.',
     base: { dmg: 650, cd: 0.9, num: 1, size: 1 },
     levels: [{ dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, A],
@@ -139,7 +139,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'satellite', name: 'Satélite', en: 'Satellite', elem: 'energy', icon: '◎',
+    id: 'satellite', name: 'Satélite', en: 'Satellite', elem: 'energy',
     desc: 'Esferas que giram ao redor do personagem.',
     base: { dmg: 450, cd: 0.5, num: 1, size: 1 },
     levels: [{ dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, A],
@@ -150,7 +150,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'arcane_ray', name: 'Raio Arcano', en: 'Arcane Ray', elem: 'energy', icon: '☄',
+    id: 'arcane_ray', name: 'Raio Arcano', en: 'Arcane Ray', elem: 'energy',
     desc: 'Dispara um raio que atravessa tudo.',
     base: { dmg: 900, cd: 3.5, num: 1, size: 1, dur: 0.8 },
     levels: [{ dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, { dmg: 0.2, num: 1 }, A],
@@ -161,7 +161,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'electric_zone', name: 'Zona Elétrica', en: 'Electric Zone', elem: 'storm', icon: '◉',
+    id: 'electric_zone', name: 'Zona Elétrica', en: 'Electric Zone', elem: 'storm',
     desc: 'Causa dano contínuo ao redor do personagem.',
     base: { dmg: 125, cd: 0, num: 1, size: 1, interval: 0.25 },
     levels: [{ size: 0.15 }, { dmg: 0.5 }, { size: 0.15 }, { size: 0.2 }, { dmg: 0.5 }, A],
@@ -172,7 +172,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'frost_nova', name: 'Nova Congelante', en: 'Frost Nova', elem: 'nature', icon: '✱',
+    id: 'frost_nova', name: 'Nova Congelante', en: 'Frost Nova', elem: 'nature',
     desc: 'Congela inimigos próximos por um momento.',
     base: { dmg: 1200, cd: 5.5, num: 1, size: 1 },
     levels: [{ size: 0.15 }, { dmg: 0.5 }, { cd: 0.15 }, { size: 0.2 }, { dmg: 0.5 }, A],
@@ -183,7 +183,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'lava_zone', name: 'Zona de Lava', en: 'Lava Zone', elem: 'fire', icon: '♒',
+    id: 'lava_zone', name: 'Zona de Lava', en: 'Lava Zone', elem: 'fire',
     desc: 'Cria uma poça de lava que causa dano contínuo.',
     base: { dmg: 1000, cd: 5, num: 1, size: 1, dur: 6, interval: 0.5 },
     levels: [{ num: 1 }, { dmg: 0.5 }, { size: 0.2 }, { num: 1 }, { dmg: 0.5 }, A],
@@ -194,7 +194,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'flash_shock', name: 'Choque Relâmpago', en: 'Flash Shock', elem: 'storm', icon: '⚡',
+    id: 'flash_shock', name: 'Choque Relâmpago', en: 'Flash Shock', elem: 'storm',
     desc: 'Um clarão cruza a tela na direção em que você anda.',
     base: { dmg: 1800, cd: 10, num: 1, size: 1 },
     levels: [{ size: 0.15 }, { dmg: 0.5 }, { size: 0.15 }, { cd: 0.2 }, { dmg: 0.5 }, A],
@@ -206,7 +206,7 @@ export const SPELLS = [
   },
   // ----- utilitárias (máx. nível 5) -----
   {
-    id: 'shield', name: 'Escudo', en: 'Shield', elem: 'none', icon: '🛡', utility: true,
+    id: 'shield', name: 'Escudo', en: 'Shield', elem: 'none', utility: true,
     desc: 'Cria um escudo que bloqueia um golpe. Começa com 2 cargas.',
     base: { dmg: 500, cd: 33, num: 2, size: 1 },
     levels: [{ cd: 0.1 }, { cd: 0.1 }, { cd: 0.1 }, A],
@@ -217,7 +217,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'cloaking', name: 'Camuflagem', en: 'Cloaking', elem: 'none', icon: '👁', utility: true,
+    id: 'cloaking', name: 'Camuflagem', en: 'Cloaking', elem: 'none', utility: true,
     desc: 'Atravessa tudo e fica mais rápido por um momento (ativa ao levar dano).',
     base: { dmg: 50000, cd: 45, num: 1, size: 1, dur: 2 },
     levels: [{ dur: 0.3 }, { dur: 0.3 }, { dur: 0.3 }, A],
@@ -228,7 +228,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'magic_circle', name: 'Círculo Mágico', en: 'Magic Circle', elem: 'none', icon: '⛤', utility: true,
+    id: 'magic_circle', name: 'Círculo Mágico', en: 'Magic Circle', elem: 'none', utility: true,
     desc: 'Amplifica o ATK em 25% por um tempo.',
     base: { dmg: 25, cd: 20, num: 1, size: 1, dur: 5 },
     levels: [{ dmg: 0.2, dur: 0.2 }, { dmg: 0.2, dur: 0.2 }, { dmg: 0.2, dur: 0.2 }, A],
@@ -239,7 +239,7 @@ export const SPELLS = [
     ],
   },
   {
-    id: 'armageddon', name: 'Armagedom', en: 'Armageddon', elem: 'none', icon: '☢', utility: true,
+    id: 'armageddon', name: 'Armagedom', en: 'Armageddon', elem: 'none', utility: true,
     desc: 'Elimina todos os inimigos da tela.',
     base: { dmg: 0, cd: 100, num: 1, size: 1 },
     levels: [{ cd: 0.1 }, { cd: 0.1 }, { cd: 0.1 }, A],

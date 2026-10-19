@@ -25,6 +25,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: node scripts/check-no-emoji.mjs
       - run: sh scripts/build-site.sh site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

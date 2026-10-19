@@ -11,7 +11,7 @@ const PURPLE = '#b06ae8', ARC = '#7a8cff', FIRE = '#e8643a', STONE = '#8a7a66', 
 
 // ---------- peças ----------
 // gema lapidada: coroa, mesa e pavilhão facetados
-function gem(x, y, r, c) {
+export function gem(x, y, r, c) {
   const tl = [x - r * 0.6, y - r * 0.75], tr = [x + r * 0.6, y - r * 0.75], ml = [x - r, y - r * 0.15], mr = [x + r, y - r * 0.15], b = [x, y + r];
   const il = [x - r * 0.3, y - r * 0.15], ir = [x + r * 0.3, y - r * 0.15];
   return `
@@ -60,7 +60,7 @@ function artBack(c, r) {
   <path fill="none" stroke="${K}" stroke-width=".7" stroke-linecap="round" d="${rays}"/>
   <circle cx="32" cy="32" r="23.5" fill="none" stroke="${K}" stroke-width="1.1" stroke-dasharray="1.5 2.5"/>`;
 }
-const corkFlask = (x, y, s, c) => `
+export const corkFlask = (x, y, s, c) => `
   <path fill="${P}" fill-opacity=".85" ${S} d="M${x - 3 * s} ${y - 12 * s} V${y - 7 * s} C${x - 10 * s} ${y - 4 * s} ${x - 11 * s} ${y + 6 * s} ${x - 6 * s} ${y + 10 * s} C${x - 3 * s} ${y + 12 * s} ${x + 3 * s} ${y + 12 * s} ${x + 6 * s} ${y + 10 * s} C${x + 11 * s} ${y + 6 * s} ${x + 10 * s} ${y - 4 * s} ${x + 3 * s} ${y - 7 * s} V${y - 12 * s}Z"/>
   <path fill="${c}" stroke="none" d="M${x - 9.4 * s} ${y + 1 * s} C${x - 9.6 * s} ${y + 5 * s} ${x - 8.6 * s} ${y + 8 * s} ${x - 6 * s} ${y + 9.6 * s} C${x - 3 * s} ${y + 11.4 * s} ${x + 3 * s} ${y + 11.4 * s} ${x + 6 * s} ${y + 9.6 * s} C${x + 8.6 * s} ${y + 8 * s} ${x + 9.6 * s} ${y + 5 * s} ${x + 9.4 * s} ${y + 1 * s}Z"/>
   <path fill="none" ${M} d="M${x - 9.4 * s} ${y + 1 * s} H${x + 9.4 * s}"/>

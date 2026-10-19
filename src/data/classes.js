@@ -31,7 +31,7 @@ export const CLASSES = [
   signature('shaman', 'Xamã', 'Shaman', 'thunderstorm', 'Tempestade de Raios', 'cd', 'num35'),
   signature('warlock', 'Bruxo', 'Warlock', 'meteor', 'Meteoro', 'cd', 'num35'),
   {
-    id: 'arcanist', name: 'Arcanista', en: 'Arcanist', spell: 'magic_bolt', icon: '📜', start: { magic_bolt: 1 },
+    id: 'arcanist', name: 'Arcanista', en: 'Arcanist', spell: 'magic_bolt', start: { magic_bolt: 1 },
     perLvlDmg: 0.01, choices: -1, manaBack: 0, passives: { intelligence: 1 },
     stats: (s) => { s.mana += 0.10; s.amp += 0.10; s.atk += 0.05; },
     perks: ['Projétil Mágico +1 nível', 'Dano de todas as magias +1% por nível', 'Uma carta a menos por escolha, sem Recuperar mana', 'Inteligência +1, mana +10%, ATK amplificado +10%, ATK +5%'],
@@ -49,7 +49,7 @@ export const CLASSES = [
   signature('sorcerer', 'Mago Elétrico', 'Sorcerer', 'electric_shock', 'Choque Elétrico', 'cd', 'num35'),
   signature('alchemist', 'Alquimista', 'Alchemist', 'energy_bolt', 'Raio de Energia', 'cd', 'num35'),
   {
-    id: 'scholar', name: 'Erudito', en: 'Scholar', spell: null, icon: '🎓', startLevel: 3,
+    id: 'scholar', name: 'Erudito', en: 'Scholar', spell: null, startLevel: 3,
     perLvlDmg: 0.01, specials: ['doctor'], manaBack: 1.3, fourChance: 0.5,
     stats: (s) => { s.mana += 0.05; },
     perks: ['Começa 3 níveis acima', 'Dano de todas as magias +1% por nível', 'Doutor: nível máximo +3', 'Recuperar mana devolve +30%, 50% de chance de 4 cartas', 'Mana +5%'],
@@ -64,13 +64,13 @@ export const CLASSES = [
     perks: ['Começa 3 níveis acima', 'Dano dos combos +100% (50% + 50%)', 'Círculo Mágico +1 nível', 'Conjuração Silenciosa: recarga -7%', 'Recarga de todas as magias -3%'],
   },
   {
-    id: 'archaeologist', name: 'Arqueólogo', en: 'Archaeologist', spell: 'magic_bolt', icon: '🧭', start: { magic_bolt: 1 },
+    id: 'archaeologist', name: 'Arqueólogo', en: 'Archaeologist', spell: 'magic_bolt', start: { magic_bolt: 1 },
     chestEvery: 15, chestFreq: 1.1, passives: { explorer: 1 },
     stats: (s) => { s.mana += 0.10; s.pickup += 0.20; },
     perks: ['Projétil Mágico +1 nível', 'Um baú a cada 15 níveis', 'Explorador +1, mana +10%', 'Baús 10% mais frequentes', 'Alcance de coleta +20%'],
   },
   {
-    id: 'magician', name: 'Ilusionista', en: 'Magician', spell: 'magic_bolt', icon: '🎩', start: { magic_bolt: 2 }, morph: 0.30,
+    id: 'magician', name: 'Ilusionista', en: 'Magician', spell: 'magic_bolt', start: { magic_bolt: 2 }, morph: 0.30,
     stats: (s) => { s.crit += 0.03; },
     perks: ['Projétil Mágico +2 níveis', '30% de chance de o projétil virar Choque Elétrico, Bola de Fogo, Espírito ou Raio de Energia', 'Crítico +3%'],
   },
@@ -78,7 +78,7 @@ export const CLASSES = [
   signature('battlemage', 'Mago de Batalha', 'Battlemage', 'flash_shock', 'Choque Relâmpago', 'cd', 'size'),
   signature('warlord', 'Senhor da Guerra', 'Warlord', 'incineration', 'Incineração', 'cd', 'size'),
   {
-    id: 'black_mage', name: 'Mago Negro', en: 'Black Mage', spell: 'magic_bolt', icon: '💀', start: { magic_bolt: 1 },
+    id: 'black_mage', name: 'Mago Negro', en: 'Black Mage', spell: 'magic_bolt', start: { magic_bolt: 1 },
     killBlast: 0.20, passives: { arcane_effuse: 1 },
     stats: (s) => { s.size += 0.03; },
     perks: ['Projétil Mágico +1 nível', '20% de chance de o inimigo explodir ao morrer (75% do HP máximo dele)', 'Efusão Arcana +1', 'Tamanho de todas as magias +3%'],
