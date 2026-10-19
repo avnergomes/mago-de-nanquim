@@ -1,6 +1,6 @@
 import { G, shuffle } from './state.js';
 import { SPELLS, maxLevel } from '../data/spells.js';
-import { PASSIVES, GROWTH, SPECIALS } from '../data/passives.js';
+import { PASSIVES, GROWTH, SPECIALS, ARTIFACTS } from '../data/passives.js';
 import { COMBOS } from '../data/combos.js';
 import { learn, addAttr, combosReady, activateCombo } from './spells/index.js';
 import { recomputeStats } from './player.js';
@@ -76,10 +76,19 @@ export function attrOptions(spellId, atLevel) {
     });
 }
 
-// Baú: 3 passivas especiais ainda não obtidas
-export function chestOptions() {
-  const avail = shuffle(SPECIALS.filter(s => !G.specials.has(s.id))).slice(0, 3);
-  if (!avail.length) return [{ kind: 'heal', icon: '❤', title: 'Tesouro', sub: 'Baú', desc: 'Recupera todo o HP.', apply: () => { G.player.hp = G.player.maxHp; } }];
-  return avail.map(s => ({ kind: 'special', id: s.id, icon: s.icon, title: s.name, sub: 'Passiva Especial', desc: s.desc,
-    apply: () => { G.specials.add(s.id); recomputeStats(); if (s.id === 'noblesse') s.apply(G.stats, G); } }));
+// Baú: 3 tesouros ainda não obtidos. A Caixa Preta garante um artefato; no baú comum cada carta
+// tem 15% de chance de ser artefato.
+const ARTIFACT_CHANCE = 0.15;
+export function chestOptions(sub = 'common') {
+  const relics = shuffle(SPECIALS.filter(s => !G.specials.has(s.id)));
+  const arts = shuffle(ARTIFACTS.filter(a => !G.artifacts.has(a.id)));
+  const out = [];
+  for (let i = 0; i < 3; i++) {
+    const wantArt = (sub === 'blackbox' && i === 0) || Math.random() < ARTIFACT_CHANCE;
+    const src = (wantArt && arts.length) || !relics.length ? arts : relics;
+    if (src.length) out.push({ t: src.shift(), art: src === arts });
+  }
+  if (!out.length) return [{ kind: 'heal', icon: '❤', title: 'Tesouro', sub: 'Baú', desc: 'Recupera todo o HP.', apply: () => { G.player.hp = G.player.maxHp; } }];
+  return out.map(({ t, art }) => ({ kind: art ? 'artifact' : 'special', id: t.id, icon: t.icon, title: t.name, sub: art ? 'Artefato' : 'Relíquia', desc: t.desc,
+    apply: () => { (art ? G.artifacts : G.specials).add(t.id); recomputeStats(); if (t.id === 'noblesse') t.apply(G.stats, G); } }));
 }

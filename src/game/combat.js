@@ -7,10 +7,11 @@ const KILL_MANA = 0.25; // fração do XP do inimigo ganha ao matar, sem pegar o
 // ---------- dano ----------
 export function damage(e, amount, o = {}) {
   if (!e.alive) return 0;
-  let dmg = amount * (1 + e.melt);
+  let dmg = amount * (1 + e.melt) * (e.elite || e.def.boss ? 1 + G.stats.eliteDmg : 1);
   let crit = false;
   if (!o.noCrit && Math.random() < G.stats.crit) { dmg *= G.stats.critMul; crit = true; }
   e.hp -= dmg;
+  if (G.stats.execute && !e.def.boss && e.hp < e.maxHp * G.stats.execute) e.hp = 0; // Foice do Ceifador
   e.flash = 0.07;
   if (o.freeze && !resists(e)) e.freeze = Math.max(e.freeze, o.freeze);
   if (o.stun && !resists(e)) e.stun = Math.max(e.stun, o.stun);
@@ -29,6 +30,7 @@ export function kill(e) {
   if (!e.alive) return;
   e.alive = false;
   G.kills++;
+  if (G.stats.killHeal) G.player.hp = Math.min(G.player.maxHp, G.player.hp + G.player.maxHp * G.stats.killHeal);
   inkSplat(e.x, e.z, e.r);
   const d = e.def;
   // mana direta por abate (pequena); os orbes continuam sendo a fonte principal

@@ -1,4 +1,5 @@
-// Passivas comuns, de crescimento (após o nível 100) e especiais (vindas de baús).
+// Passivas comuns, de crescimento (após o nível 100), relíquias (passivas especiais dos baús)
+// e artefatos (mais raros e fortes: garantidos na Caixa Preta, 15% por carta no baú comum).
 // apply(st, n) altera o objeto de atributos do jogador; n = nível atual (1..max).
 
 export const PASSIVES = [
@@ -47,4 +48,38 @@ export const SPECIALS = [
   { id: 'eldritch', name: 'Sobrenatural', icon: '👁', desc: 'HP máximo de elites -10%', apply: (s) => { s.eliteHp -= 0.10; } },
   { id: 'noblesse', name: 'Nobreza', icon: '👑', desc: 'Cria 1 baú do tesouro por perto', apply: (s, G) => { G.spawnChest(G.player.x + 3, G.player.z + 2); } },
   { id: 'taoist', name: 'Taoísta', icon: '☯', desc: 'Nível máximo de todas as passivas comuns +1', apply: (s) => { s.passiveBonus += 1; } },
+  // relíquias criadas para esta releitura
+  { id: 'raven_feather', name: 'Pena de Corvo', icon: '🪶', desc: '6% de chance de esquivar de um golpe', apply: (s) => { s.dodge += 0.06; } },
+  { id: 'wolf_fang', name: 'Presa de Lobo', icon: '🦷', desc: 'Crítico +4%, multiplicador de crítico +15%', apply: (s) => { s.crit += 0.04; s.critMul += 0.15; } },
+  { id: 'iron_ring', name: 'Anel de Ferro', icon: '💍', desc: 'Dano recebido -8%', apply: (s) => { s.dmgTaken -= 0.08; } },
+  { id: 'mana_vial', name: 'Ampola de Mana', icon: '🧪', desc: 'Mana obtida +15%', apply: (s) => { s.mana += 0.15; } },
+  { id: 'eternal_candle', name: 'Vela Eterna', icon: '🕯', desc: 'Duração das magias +10%. Regeneração +0,1%/s', apply: (s) => { s.dur += 0.10; s.regen += 0.001; } },
+  { id: 'old_coin', name: 'Moeda Antiga', icon: '🪙', desc: 'Alcance de coleta +30%, orbes de mana surgem 10% mais vezes', apply: (s) => { s.pickup += 0.30; s.manaFreq += 0.10; } },
+  { id: 'hunter_badge', name: 'Insígnia do Caçador', icon: '🎯', desc: 'Dano contra elites e chefes +20%', apply: (s) => { s.eliteDmg += 0.20; } },
+  { id: 'rosary', name: 'Rosário', icon: '📿', desc: 'Cada abate cura 0,1% do HP máximo', apply: (s) => { s.killHeal += 0.001; } },
+  { id: 'traveler_boots', name: 'Botas de Viajante', icon: '🥾', desc: 'Velocidade de movimento +6%', apply: (s) => { s.speed += 0.06; } },
+  { id: 'quartz_lens', name: 'Lente de Quartzo', icon: '🔍', desc: 'Tamanho das magias +6%, crítico +3%', apply: (s) => { s.size += 0.06; s.crit += 0.03; } },
+  { id: 'sage_bundle', name: 'Ramo de Sálvia', icon: '🌿', desc: 'Cura do Orbe de Vida +40%, HP máximo +10%', apply: (s) => { s.lifeOrb += 0.40; s.maxHp += 0.10; } },
+  { id: 'frost_shard', name: 'Lasca de Gelo Eterno', icon: '❄', desc: 'Inimigos 5% mais lentos. Dano de Natureza +10%', apply: (s) => { s.enemySlow += 0.05; s.elem.nature += 0.10; } },
+  { id: 'arcane_fragment', name: 'Fragmento Arcano', icon: '◈', desc: 'Dano das magias arcanas (Projétil Mágico e utilitárias) +30%', apply: (s) => { s.elem.none += 0.30; } },
+];
+
+// Artefatos: tesouros raros e fortes, quase sempre com um preço
+export const ARTIFACTS = [
+  { id: 'phoenix_heart', name: 'Coração de Fênix', icon: '❤', desc: 'Revive mais 1 vez. Regeneração +0,4%/s', apply: (s) => { s.revive += 1; s.regen += 0.004; } },
+  { id: 'forbidden_grimoire', name: 'Grimório Proibido', icon: '📕', desc: 'Dano de todas as magias +40%. HP máximo -20%', apply: (s) => { s.magicDmg += 0.40; s.maxHp -= 0.20; } },
+  { id: 'broken_hourglass', name: 'Ampulheta Partida', icon: '⌛', desc: 'Recarga de todas as magias -15%. Duração -10%', apply: (s) => { s.cdr += 0.15; s.dur -= 0.10; } },
+  { id: 'abyss_eye', name: 'Olho do Abismo', icon: '👁', desc: 'Crítico +15%, multiplicador de crítico +50%', apply: (s) => { s.crit += 0.15; s.critMul += 0.50; } },
+  { id: 'sun_crown', name: 'Coroa do Sol', icon: '☀', desc: 'Dano de Fogo e Tempestade +30%', apply: (s) => { s.elem.fire += 0.30; s.elem.storm += 0.30; } },
+  { id: 'winter_chalice', name: 'Cálice do Inverno', icon: '🏆', desc: 'Dano de Natureza +35%. Inimigos 10% mais lentos', apply: (s) => { s.elem.nature += 0.35; s.enemySlow += 0.10; } },
+  { id: 'reaper_scythe', name: 'Foice do Ceifador', icon: '⚰', desc: 'Inimigos comuns e elites abaixo de 8% do HP morrem na hora', apply: (s) => { s.execute = Math.max(s.execute, 0.08); } },
+  { id: 'vampire_medallion', name: 'Medalhão Vampírico', icon: '🦇', desc: 'Cada abate cura 0,4% do HP máximo', apply: (s) => { s.killHeal += 0.004; } },
+  { id: 'winged_boots', name: 'Botas Aladas', icon: '🪽', desc: 'Velocidade +20%, 10% de chance de esquivar', apply: (s) => { s.speed += 0.20; s.dodge += 0.10; } },
+  { id: 'titan_bow', name: 'Arco Mata-Titãs', icon: '🏹', desc: 'Dano contra elites e chefes +50%', apply: (s) => { s.eliteDmg += 0.50; } },
+  { id: 'philosopher_stone', name: 'Pedra Filosofal', icon: '🔴', desc: 'Mana obtida +40%, orbes de mana surgem 30% mais vezes', apply: (s) => { s.mana += 0.40; s.manaFreq += 0.30; } },
+  { id: 'arcane_prism', name: 'Prisma Arcano', icon: '🔺', desc: 'Tamanho das magias +20%. Amplifica ATK em 15%', apply: (s) => { s.size += 0.20; s.amp += 0.15; } },
+  { id: 'archmage_scepter', name: 'Cetro do Arquimago', icon: '⚚', desc: 'Nível máximo das passivas comuns +1. Nível máximo +5', apply: (s) => { s.passiveBonus += 1; s.maxLevel += 5; } },
+  { id: 'dragon_scale', name: 'Escama de Dragão', icon: '🐉', desc: 'HP máximo +40%, dano recebido -25%', apply: (s) => { s.maxHp += 0.40; s.dmgTaken -= 0.25; } },
+  { id: 'titan_gauntlet', name: 'Manopla do Titã', icon: '✊', desc: 'ATK +30%, recarga -5%', apply: (s) => { s.atk += 0.30; s.cdr += 0.05; } },
+  { id: 'astrolabe', name: 'Astrolábio', icon: '✴', desc: 'Runas duram +50%. Duração das magias +20%', apply: (s) => { s.rune += 0.50; s.dur += 0.20; } },
 ];

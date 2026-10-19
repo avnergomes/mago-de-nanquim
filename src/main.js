@@ -174,7 +174,7 @@ addEventListener('resize', resize);
 // ---------- partida ----------
 function newRun() {
   Object.assign(G, {
-    t: 0, over: false, paused: false, spells: {}, passives: {}, growth: {}, specials: new Set(), combos: {},
+    t: 0, over: false, paused: false, spells: {}, passives: {}, growth: {}, specials: new Set(), artifacts: new Set(), combos: {},
     level: 1, xp: 0, kills: 0, apocT: 0, cloaked: 0, pendingLevels: 0, hooks: {}, runes: { inv: 0, frenzy: 0, greed: 0 }, alertT: 0,
     buff: { amp: 0, cdr: 0, slowAura: 0 }, usedRevives: 0, won: false, endless: false, bossRef: null,
   });

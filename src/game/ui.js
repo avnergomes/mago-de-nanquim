@@ -5,10 +5,11 @@ import { G, xpNeeded } from './state.js';
 const MANA_BACK = 0.5;
 import { ELEM, SPELL_BY_ID, maxLevel } from '../data/spells.js';
 import { COMBOS } from '../data/combos.js';
-import { PASSIVES, SPECIALS } from '../data/passives.js';
+import { PASSIVES, SPECIALS, ARTIFACTS } from '../data/passives.js';
 import { levelOptions, attrOptions, chestOptions } from './levelup.js';
 import { spellIcon } from '../render/icons.js';
 import { classIcon as classArt, classColor } from '../render/classIcons.js';
+import { treasureIcon } from '../render/treasureIcons.js';
 import { CLASSES, CLASS_BY_ID } from '../data/classes.js';
 
 const $ = (id) => document.getElementById(id);
@@ -39,9 +40,9 @@ function choose(title, subtitle, options, cls = '', skip = null) {
     options.forEach((o, i) => {
       const el = document.createElement('button');
       el.className = `card kind-${o.kind}`;
-      const col = o.elem ? ELEM[o.elem].color : o.kind === 'combo' ? '#d4a73a' : o.kind === 'special' ? '#c0508a' : '#5a7a5a';
+      const col = o.elem ? ELEM[o.elem].color : o.kind === 'combo' ? '#d4a73a' : o.kind === 'special' ? '#c0508a' : o.kind === 'artifact' ? '#e6c93a' : '#5a7a5a';
       el.style.setProperty('--accent', col);
-      el.innerHTML = `<div class="ic">${spellIcon(o.spell ?? o.id) ?? esc(o.icon || '?')}</div><div class="tx"><b>${esc(o.title)}</b><i>${esc(o.sub || '')}</i><p>${esc(o.desc).replace(/\n/g, '<br>')}</p></div><kbd>${i + 1}</kbd>`;
+      el.innerHTML = `<div class="ic">${spellIcon(o.spell ?? o.id) ?? treasureIcon(o.id) ?? esc(o.icon || '?')}</div><div class="tx"><b>${esc(o.title)}</b><i>${esc(o.sub || '')}</i><p>${esc(o.desc).replace(/\n/g, '<br>')}</p></div><kbd>${i + 1}</kbd>`;
       el.onclick = () => done(o);
       cards.appendChild(el);
     });
@@ -109,9 +110,9 @@ export function initUI() {
       b.textContent = msg;
       b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
     },
-    openChest() {
+    openChest(sub) {
       enqueue(async () => {
-        const o = await choose('Baú do tesouro', 'Uma passiva especial para esta partida.', chestOptions(), 'chest');
+        const o = await choose(sub === 'blackbox' ? 'Caixa Preta' : 'Baú do tesouro', 'Uma relíquia ou um artefato para esta partida.', chestOptions(sub), 'chest');
         o.apply();
         refreshBuild();
       });
@@ -157,9 +158,11 @@ export function buildSummary() {
     return `<li><b>${spellIcon(sp.def.id) ?? esc(sp.def.icon)} ${esc(sp.def.name)}</b> nv ${sp.lvl}${attrs.length ? ` <i>(${esc(attrs.join(', '))})</i>` : ''}</li>`;
   }).join('');
   const pas = PASSIVES.filter(p => G.passives[p.id]).map(p => `${esc(p.name)} ${G.passives[p.id]}`).join(', ') || 'nenhuma';
-  const spc = SPECIALS.filter(s => G.specials.has(s.id)).map(s => esc(s.name)).join(', ') || 'nenhuma';
+  const tre = (list, set) => list.filter(t => set.has(t.id)).map(t => `<span class="tr">${treasureIcon(t.id) ?? ''}${esc(t.name)}</span>`).join(', ');
+  const spc = tre(SPECIALS, G.specials) || 'nenhuma';
+  const art = tre(ARTIFACTS, G.artifacts) || 'nenhum';
   const cmb = Object.keys(G.combos).map(id => esc(COMBOS.find(c => c.id === id).name)).join(', ') || 'nenhum';
-  return `<ul class="sum">${spells}</ul><p><b>Passivas:</b> ${pas}</p><p><b>Especiais:</b> ${spc}</p><p><b>Combos:</b> ${cmb}</p>`;
+  return `<ul class="sum">${spells}</ul><p><b>Passivas:</b> ${pas}</p><p><b>Relíquias:</b> ${spc}</p><p><b>Artefatos:</b> ${art}</p><p><b>Combos:</b> ${cmb}</p>`;
 }
 
 export function showEnd(victory) {

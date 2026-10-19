@@ -73,6 +73,7 @@ kbd { font-family: inherit; border: 1.5px solid var(--ink); border-radius: 5px; 
 .card p { margin: 6px 0 0; font-size: 14px; font-family: system-ui, sans-serif; line-height: 1.35; }
 .card kbd { position: absolute; right: 8px; top: 6px; font-size: 12px; }
 .card.kind-combo { background: #fbe9a8; border-width: 3.5px; }
+.card.kind-artifact { background: #fbf0c4; border-width: 3.5px; box-shadow: 0 0 0 2px #e6c93a, 3px 4px 0 var(--ink); }
 .modal.chest .sheet { background-color: #f7e7c0; }
 .sum { text-align: left; font-family: system-ui, sans-serif; font-size: 14px; padding-left: 18px; }
 #pause-build p, #end-stats p { font-family: system-ui, sans-serif; font-size: 14px; text-align: left; }
@@ -97,6 +98,7 @@ kbd { font-family: inherit; border: 1.5px solid var(--ink); border-radius: 5px; 
 .card .ic:has(.glyph) { width: 56px; height: 56px; background: color-mix(in srgb, var(--accent) 12%, #fffbe9); }
 .card .ic .glyph { width: 44px; height: 44px; }
 .sp span { width: 34px; height: 34px; display: grid; place-items: center; }
+.tr .glyph { width: 1.5em; height: 1.5em; display: inline-block; vertical-align: -0.4em; margin-right: 2px; }
 .sum .glyph { width: 1.4em; height: 1.4em; display: inline-block; vertical-align: -0.35em; }
 @media (max-width: 700px) { .sp span { width: 24px; height: 24px; } }
 /* escolha de classe */

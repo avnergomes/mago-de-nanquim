@@ -93,7 +93,7 @@ function collect(it, gainXp) {
   } else if (it.type === 'rune') {
     useRune(it.rune);
   } else if (it.type === 'chest') {
-    G.ui?.openChest();
+    G.ui?.openChest(it.sub);
   }
 }
 

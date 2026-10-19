@@ -57,7 +57,7 @@ Dados extraídos do wiki da comunidade (magic-survival-rpg.fandom.com, versão 0
 
 - **17 magias de ataque + 4 utilitárias**, cada uma com seus níveis (7 ou 5) e os bônus exatos por nível.
 - **63 atributos** (3 por magia, escolhidos no nível máximo; o Projétil Mágico escolhe também no nível 4).
-- **8 passivas comuns**, **8 passivas de crescimento** (após o nível 100) e **23 passivas especiais** (vindas de baús de elites e chefes).
+- **8 passivas comuns**, **8 passivas de crescimento** (após o nível 100) e **23 passivas especiais** (vindas de baús de elites e chefes), aqui chamadas de relíquias.
 - **25 combos** com os pré-requisitos do wiki.
 - **24 classes** (wiki, página Classes), escolhidas na tela inicial. Cada classe ligada a uma magia começa com ela
   2 níveis acima, ganha +3% de dano nela a cada 5 níveis, recarga/número/tamanho próprios e +20% de dano.
@@ -84,13 +84,18 @@ O que é criação desta releitura:
   Mestre das Tempestades, Sintonia Elétrica, Raio do Nada, Dilúvio). Foram ligados ao atributo
   mais parecido; estão marcados com `guess: true` em `src/data/combos.js`.
 - Números de HP, dano e velocidade dos inimigos (o jogo não os publica) e a curva de dificuldade.
-- Baús e Caixa Preta dão passivas especiais, já que artefatos estão fora do escopo.
+- Tesouros dos baús: além das 23 relíquias do original há **13 relíquias novas** e **16 artefatos**
+  (criação desta releitura, não os artefatos do jogo original). Artefatos são mais fortes e às vezes cobram um
+  preço (o Grimório Proibido tira HP máximo). A Caixa Preta garante um artefato; no baú comum cada carta tem 15%
+  de chance de ser artefato. Mecânicas novas: esquiva, dano extra contra elites e chefes, execução abaixo de 8%
+  do HP e cura por abate.
+- Ícones de magias, classes e tesouros são ilustrações SVG geradas por código (`src/render/`).
 - Classes: no original elas sobem de nível com material de pesquisa; aqui a classe escolhida já vem com os
   bônus dos níveis 1 a 5. O botão "Recuperar mana" (pular a escolha de nível) devolve 50% da mana do nível;
   o valor base é estimativa, já que o wiki não publica. O bônus de dano dos combos do Arquimago vale para os efeitos-assinatura dos combos.
 - Vitória aos 20 min, depois modo infinito.
 
-Fora do escopo: artefatos, progressão permanente entre partidas (pesquisa, ouro) e som.
+Fora do escopo: os artefatos equipáveis do original, progressão permanente entre partidas (pesquisa, ouro) e som.
 
 ## Estrutura
 

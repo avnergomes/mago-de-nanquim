@@ -1,5 +1,5 @@
 import { G, baseStats, HP_BASE, SPEED_BASE, xpNeeded } from './state.js';
-import { PASSIVES, GROWTH, SPECIALS } from '../data/passives.js';
+import { PASSIVES, GROWTH, SPECIALS, ARTIFACTS } from '../data/passives.js';
 import { inRadius } from './enemies.js';
 import { damage } from './combat.js';
 import { input } from './input.js';
@@ -14,6 +14,7 @@ export function recomputeStats() {
   for (const ps of PASSIVES) for (let i = 0; i < (G.passives[ps.id] || 0); i++) ps.apply(st);
   for (const gp of GROWTH) for (let i = 0; i < (G.growth[gp.id] || 0); i++) gp.apply(st);
   for (const sp of SPECIALS) if (G.specials.has(sp.id) && sp.id !== 'noblesse') sp.apply(st, G);
+  for (const ar of ARTIFACTS) if (G.artifacts.has(ar.id)) ar.apply(st, G);
   G.cls?.stats?.(st);
   st.revive -= G.usedRevives || 0;
   const p = G.player;
@@ -53,6 +54,7 @@ export function hurtPlayer(dmg) {
   if (p.invuln > 0 || G.cloaked > 0 || G.over || G.runes.inv > 0) return;
   if (G.spells.shield?.block?.()) { p.invuln = 0.5; return; }
   if (G.spells.cloaking?.trigger?.()) return;
+  if (Math.random() < G.stats.dodge) { p.invuln = 0.3; return; }
   p.hp -= dmg * Math.max(0.1, 1 + G.stats.dmgTaken);
   p.invuln = 0.6;
   p.hurtFlash = 0.2;

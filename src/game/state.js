@@ -9,6 +9,7 @@ export const G = {
   passives: {},     // id -> nível
   growth: {},
   specials: new Set(),
+  artifacts: new Set(),
   combos: {},       // id -> runtime
   level: 1, xp: 0, kills: 0,
   apocT: 0,
@@ -28,6 +29,7 @@ export function baseStats() {
     elem: { fire: 0, storm: 0, nature: 0, energy: 0, none: 0 },
     enemySlow: 0, enemyHp: 0, eliteHp: 0, manaFreq: 0, maxLevel: 100,
     magicDmg: 0, passiveBonus: 0, rune: 0, mana: 0,
+    dodge: 0, eliteDmg: 0, execute: 0, killHeal: 0,
   };
 }
 
